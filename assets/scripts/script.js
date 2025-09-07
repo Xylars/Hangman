@@ -141,8 +141,13 @@ function isChar(char) {
     return !/\d/.test(char);
 }
 
+function isWord(str) {
+    return /^[A-Za-z]+$/.test(str);
+}
+
 submit.addEventListener('click', () => {
     text = guess.value;
+    guess.value = "";
     if (!gameActive) {
         let error = "Please start a new game";
         secondError.innerHTML = error;
@@ -170,7 +175,6 @@ submit.addEventListener('click', () => {
 
         return;
     }
-    guess.value = "";
     secondError.innerHTML = "";
     correctChars.push(text.toUpperCase());
     drawCharacter(text);
@@ -206,6 +210,7 @@ function drawCharacter(character) {
 restart.addEventListener('click', () => {
     timeFails = 0;
     correctGuess = 0;
+    guess.value = "";
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.reset();
     wrongChars = [];
@@ -221,10 +226,10 @@ restart.addEventListener('click', () => {
 
 startBtn.addEventListener('click', () => {
 
-     guessWord = guessSubmit.value;
-     guessWord = guessWord.toUpperCase();
+    guessWord = guessSubmit.value;
+    guessWord = guessWord.toUpperCase();
 
-    if (!isChar(guessWord) || !guessWord.trim().length) {
+    if (!isWord(guessWord) || !guessWord.trim().length) {
         let error = "Please enter a valid word!";
         firstError.innerHTML = error;
         return;
