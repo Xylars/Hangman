@@ -25,6 +25,8 @@ let halfHeight = canvas.height / 2;
 
 
 function startGame(word) {
+    guess.value = "";
+    wordInput.value = "";
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 2;
     const startY = 270;
@@ -126,6 +128,7 @@ function drawFails(times) {
     }
     if (times === limit) {
         endGame("GAME OVER", "red");
+        guess.value = "";
     }
 
 }
@@ -144,10 +147,33 @@ function isChar(char) {
 function isWord(str) {
     return /^[A-Za-z]+$/.test(str);
 }
+function writeText(text, color, font, x, y, gameEnd = false) {
+    if (gameEnd) {
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+    }
+    ctx.fillStyle = color;
+    ctx.font = font;
+    ctx.fillText(text, x, y);
+}
 
-submit.addEventListener('click', () => {
+function drawCharacter(character) {
+    const y = 260;
+    for (let i = 0; i < guessWord.length; i++) {
+        if (guessWord[i].toUpperCase() === character.toUpperCase()) {
+            ctx.fillStyle = "black";
+            ctx.font = "20px Arial";
+            ctx.textAlign = "center";
+            correctGuess++;
+            ctx.fillText(character.toUpperCase(), letterPos[i], y);
+        }
+    }
+}
+
+function submitWord() {
     text = guess.value;
     guess.value = "";
+    guess.focus();
     if (!gameActive) {
         let error = "Please start a new game";
         secondError.innerHTML = error;
@@ -182,30 +208,25 @@ submit.addEventListener('click', () => {
         gameActive = false;
         writeText("YOU WIN!", "green", "40px Arial", halfWidth, halfHeight, true);
     }
-})
-
-function writeText(text, color, font, x, y, gameEnd = false) {
-    if (gameEnd) {
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-    }
-    ctx.fillStyle = color;
-    ctx.font = font;
-    ctx.fillText(text, x, y);
 }
 
-function drawCharacter(character) {
-    const y = 260;
-    for (let i = 0; i < guessWord.length; i++) {
-        if (guessWord[i].toUpperCase() === character.toUpperCase()) {
-            ctx.fillStyle = "black";
-            ctx.font = "20px Arial";
-            ctx.textAlign = "center";
-            correctGuess++;
-            ctx.fillText(character.toUpperCase(), letterPos[i], y);
-        }
+submit.addEventListener('click', submitWord);
+guess.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        submit.click();
     }
-}
+    if (e.key === 'r' && !gameActive) {
+        restart.click();
+    }
+});
+
+wordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        startBtn.click();
+    }
+});
+
+
 
 restart.addEventListener('click', () => {
     timeFails = 0;
@@ -244,6 +265,7 @@ function onLoad() {
     canvas.classList.toggle('hidden');
     buttonsBlock.classList.toggle('hidden');
     wordInput.classList.toggle('hidden');
+    guess.focus();
 }
 
 
