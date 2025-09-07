@@ -1,0 +1,25 @@
+body {
+    background-color:rgb(48, 42, 42) ;
+}
+.gray {
+    background-color: gray;
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;  
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.error {
+    color:red;
+}
+
+.red {
+    color: red;
+}
+
+.textcolor {
+    color: white;
+}
