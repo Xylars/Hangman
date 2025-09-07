@@ -170,6 +170,7 @@ submit.addEventListener('click', () => {
 
         return;
     }
+    guess.value = "";
     secondError.innerHTML = "";
     correctChars.push(text.toUpperCase());
     drawCharacter(text);
